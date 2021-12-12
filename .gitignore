@@ -1,5 +1,5 @@
-.prettierrc
 node_modules
 build
 .env
 *.lock
+*.log
