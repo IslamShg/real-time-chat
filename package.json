@@ -12,6 +12,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json}": [
+      "eslint --fix"
+    ],
+    "src/**/*.{js,jsx,ts,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
     "dotenv-webpack": "^7.0.3",
     "react": "^17.0.2",
@@ -39,6 +52,8 @@
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "4",
+    "lint-staged": "^12.1.3",
     "prettier": "^2.5.1",
     "react-refresh": "^0.11.0",
     "sass": "^1.45.0",

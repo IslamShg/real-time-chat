@@ -1,37 +1,37 @@
-const path = require("path")
-const HTMLWebpackPlugin = require("html-webpack-plugin")
-const { CleanWebpackPlugin } = require("clean-webpack-plugin")
+const path = require('path')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
-  entry: path.resolve(__dirname, "..", "./src/index.tsx"),
+  entry: path.resolve(__dirname, '..', './src/index.tsx'),
   resolve: {
-    extensions: [".ts", ".js", ".tsx", ".jsx"],
+    extensions: ['.ts', '.js', '.tsx', '.jsx']
   },
   output: {
-    filename: "[hash].bundle.js",
-    path: path.resolve(__dirname, "..", "./build"),
+    filename: '[hash].bundle.js',
+    path: path.resolve(__dirname, '..', './build')
   },
   module: {
     rules: [
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
-        use: ["babel-loader", "ts-loader"],
+        use: ['babel-loader', 'ts-loader']
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
-      },
-    ],
+        type: 'asset/resource'
+      }
+    ]
   },
   plugins: [
     new HTMLWebpackPlugin({
-      template: path.resolve(__dirname, "..", "./public/index.html"),
+      template: path.resolve(__dirname, '..', './public/index.html')
     }),
-    new CleanWebpackPlugin(),
-  ],
+    new CleanWebpackPlugin()
+  ]
 }
