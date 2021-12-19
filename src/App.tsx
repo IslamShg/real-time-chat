@@ -1,8 +1,7 @@
 import React from 'react'
+import Router from './Routes/Router'
 import './styles/index.scss'
 
-const App = () => {
-  return <div>Env: {process.env.NODE_ENV}</div>
-}
+const App = () => <Router />
 
 export default App
