@@ -1,0 +1,17 @@
+.input {
+  width: 100%;
+  padding: 12px 8px;
+  outline: none;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-weight: 400;
+  &::placeholder {
+    font-size: 15px;
+  }
+}
+
+.validationError {
+  padding-top: 5px;
+  color: red;
+}

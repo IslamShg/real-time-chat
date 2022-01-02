@@ -7,7 +7,8 @@ module.exports = {
   devtool: 'cheap-module-source-map',
   devServer: {
     port: 3000,
-    hot: true
+    hot: true,
+    historyApiFallback: true
   },
   plugins: [
     new Dotenv({ path: path.resolve(__dirname, '..', '.env.dev') }),

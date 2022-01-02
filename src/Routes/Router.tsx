@@ -1,7 +1,16 @@
 import React from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { Home } from '../pages/Home/Home'
 
 const Router: React.FC = () => {
-  return <div>router</div>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='*' element={<Navigate to='/' />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default Router
