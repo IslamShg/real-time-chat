@@ -15,12 +15,10 @@ const App = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('signed in: ', user)
         setIsUserAuth(true)
         setLoading(false)
         return
       }
-      console.log('signed out')
       setLoading(false)
       setIsUserAuth(false)
     })
