@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --env env=dev --config webpack/webpack.config.js",
-    "build": "webpack --env env=prod --config webpack/webpack.config.js",
+    "build": "webpack CI=false --env env=prod --config webpack/webpack.config.js",
     "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,css,scss,md,json}\""
   },
