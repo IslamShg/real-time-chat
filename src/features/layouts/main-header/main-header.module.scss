@@ -1,4 +1,18 @@
 .header {
-  height: 7vh;
-  background-color: red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+  background-color: #3f0f40;
+
+  .userAvatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+  }
+
+  .logoutIcon {
+    color: #fff;
+    cursor: pointer;
+  }
 }

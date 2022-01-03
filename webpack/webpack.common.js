@@ -25,7 +25,7 @@ module.exports = {
         use: ['babel-loader', 'ts-loader']
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\.(?:ico|png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource'
       }
     ]
