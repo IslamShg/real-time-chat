@@ -7,4 +7,5 @@ export type MessageType = {
   isEdited: boolean
   text: string
   authorEmail: string | null
+  authorAvatarUrl?: string | null
 }

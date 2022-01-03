@@ -1,3 +1,26 @@
 .message {
-  width: auto;
+  display: flex;
+  gap: 10px;
+
+  font-family: 'Roboto', serif;
+
+  .authorAvatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .messageInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .messageInfoTop {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .messageSentTime {
+        font-size: 14px;
+        color: #ccc;
+      }
+    }
+  }
 }

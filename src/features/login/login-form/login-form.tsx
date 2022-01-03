@@ -44,8 +44,20 @@ export const LoginForm = () => {
   }
 
   const signUp = async ({ email, password }: FormValuesType): Promise<void> => {
-    const user = await createUserWithEmailAndPassword(auth, email, password)
-    console.log('user: ', user)
+    const userCreds = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
+    const {
+      uid,
+      displayName,
+      email: userEmail,
+      phoneNumber,
+      photoURL
+    } = userCreds.user
+
+    setUserData({ uid, displayName, phoneNumber, photoURL, email: userEmail })
   }
 
   return (

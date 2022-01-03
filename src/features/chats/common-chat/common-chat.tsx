@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   addDoc,
   collection,
@@ -20,6 +20,7 @@ import styles from './common-chat.module.scss'
 export const CommonChat = () => {
   const [messageInput, setMessageInput] = useState<string>('')
   const userData = useSelector((s: RootState) => s.user.userData)
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null)
 
   const messagesQuery: Query<DocumentData> = useMemo(
     () =>
@@ -28,6 +29,11 @@ export const CommonChat = () => {
   )
   const { messagesSnapshot } = useFirestoreQuery(messagesQuery)
 
+  useEffect(() => {
+    const scrollHeight = messagesContainerRef.current?.scrollHeight || 0
+    messagesContainerRef.current?.scrollTo(0, scrollHeight)
+  }, [messagesSnapshot])
+
   const sendMessage = async (): Promise<void> => {
     if (!messageInput.length) return console.log('123')
     const message: MessageType = {
@@ -35,7 +41,8 @@ export const CommonChat = () => {
       authorEmail: userData.email,
       isEdited: false,
       text: messageInput,
-      sentTime: Timestamp.now()
+      sentTime: Timestamp.now(),
+      authorAvatarUrl: userData.photoURL
     }
 
     setMessageInput('')
@@ -44,7 +51,7 @@ export const CommonChat = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.messagesContainer}>
+      <div className={styles.messagesContainer} ref={messagesContainerRef}>
         {messagesSnapshot?.docs.map((doc) => (
           <ChatMessage key={doc.id} message={doc.data()} />
         ))}
