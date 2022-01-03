@@ -1,11 +1,8 @@
-type TypeMainState = {
-  isLoading: boolean
+export type userDataType = {
+  uid: string | null
+  displayName: string | null
+  email: string | null
+  phoneNumber: string | null
+  photoURL: string | null
+  emailVerified?: boolean
 }
-
-type TypePostsState = {
-  isLoading: boolean
-}
-
-type TypeState = TypeMainState | TypePostsState
-
-export { TypeState }

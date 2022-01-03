@@ -4,15 +4,25 @@
   align-items: center;
   padding: 10px 25px;
   background-color: #3f0f40;
-
-  .userAvatar {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-  }
+  font-family: 'Roboto', serif;
 
   .logoutIcon {
     color: #fff;
     cursor: pointer;
+  }
+
+  .headerLeft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    .userAvatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+    }
+    .headerUsername {
+      color: #fff;
+    }
   }
 }

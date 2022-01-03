@@ -6,8 +6,9 @@ const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='*' element={<Navigate to='/' />} />
+        <Route path='/*' element={<Home />} />
+        <Route path='*' element={<Navigate to='/common' />} />
+        <Route path='/' element={<Navigate to='/common' />} />
       </Routes>
     </BrowserRouter>
   )

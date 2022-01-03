@@ -1,0 +1,14 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .contentWrapper {
+    flex: 1;
+    display: flex;
+
+    .content {
+      min-width: 200px;
+    }
+  }
+}

@@ -8,6 +8,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import { validation } from '../login-validation'
 import { LoginInput } from '../login-input'
 import { auth } from '../../../configs/firebase-config'
+import { useUserActionCreators } from '../../../slices/user-slice'
 import styles from './login-form.module.scss'
 
 type FormValuesType = {
@@ -18,15 +19,27 @@ type FormValuesType = {
 export const LoginForm = () => {
   const [authType, setAuthType] = useState<'signIn' | 'signUp'>('signIn')
   const [signInError, setSignInError] = useState<string | null>(null)
+  const { setUserData } = useUserActionCreators()
 
   const signIn = async ({ email, password }: FormValuesType): Promise<void> => {
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password)
-      console.log('user: ', user)
+      const userCreds = await signInWithEmailAndPassword(auth, email, password)
+      const {
+        uid,
+        displayName,
+        email: userEmail,
+        phoneNumber,
+        photoURL
+      } = userCreds.user
+
+      setUserData({ uid, displayName, phoneNumber, photoURL, email: userEmail })
     } catch (e) {
       if (e.code === 'auth/user-not-found') {
         setSignInError('An account with such an email was not found')
-      }
+      } else
+        setSignInError(
+          'An error happened. Please, check the given input and try again'
+        )
     }
   }
 

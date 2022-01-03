@@ -1,20 +1,21 @@
 import React from 'react'
-import { signOut } from 'firebase/auth'
-import { auth } from '../../configs/firebase-config'
+import { Route, Routes } from 'react-router-dom'
 
-import { MainHeader } from '../../features'
+import { CommonChat, MainHeader, MainSidebar } from '../../features'
+import styles from './home.module.scss'
 
 export const Home = () => {
   return (
-    <div>
+    <div className={styles.container}>
       <MainHeader />
-      <button
-        onClick={() => {
-          signOut(auth)
-        }}
-      >
-        Sign out
-      </button>
+      <div className={styles.contentWrapper}>
+        <MainSidebar />
+        <div className={styles.content}>
+          <Routes>
+            <Route path='/common' element={<CommonChat />} />
+          </Routes>
+        </div>
+      </div>
     </div>
   )
 }
