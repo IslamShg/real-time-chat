@@ -16,8 +16,6 @@ const App = () => {
     // TODO: Get user data from firestore using UID here
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('signed in user: ', user)
-
         const { uid, displayName, email, phoneNumber, photoURL } = user
         setUserData({ uid, displayName, email, phoneNumber, photoURL })
         setIsUserAuth(true)
