@@ -25,17 +25,7 @@ export const LoginForm = () => {
 
   const signIn = async ({ email, password }: FormValuesType): Promise<void> => {
     try {
-      // const userCreds =
       await signInWithEmailAndPassword(auth, email, password)
-      // const {
-      //   uid,
-      //   displayName,
-      //   email: userEmail,
-      //   phoneNumber,
-      //   photoURL
-      // } = userCreds.user
-
-      // setUserData({ uid, displayName, phoneNumber, photoURL, email: userEmail })
     } catch (e) {
       if (e.code === 'auth/user-not-found') {
         setSignInError('An account with such an email was not found')
