@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
+import Users from '../users'
 import { CommonChat, MainHeader, MainSidebar } from '../../features'
 import styles from './home.module.scss'
 
@@ -13,6 +14,7 @@ export const Home = () => {
         <div className={styles.content}>
           <Routes>
             <Route path='/common' element={<CommonChat />} />
+            <Route path='/users' element={<Users />} />
             <Route path='*' element={<Navigate to='/common' />} />
           </Routes>
         </div>

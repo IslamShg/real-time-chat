@@ -4,14 +4,14 @@ import {
   signInWithEmailAndPassword
 } from 'firebase/auth'
 import { Form, Formik, FormikProps } from 'formik'
+import { doc, setDoc } from 'firebase/firestore'
 
 import { validation } from '../login-validation'
 import { LoginInput } from '../login-input'
 import { auth, db } from '../../../configs/firebase-config'
 import { useUserActionCreators } from '../../../slices/user-slice'
-import styles from './login-form.module.scss'
-import { doc, setDoc } from 'firebase/firestore'
 import { userDataType } from '../../../slices/types'
+import styles from './login-form.module.scss'
 
 type FormValuesType = {
   email: string
@@ -47,7 +47,8 @@ export const LoginForm = () => {
       displayName,
       email: userEmail,
       phoneNumber,
-      photoURL
+      photoURL,
+      metadata
     } = userCreds.user
 
     const user: userDataType = {
@@ -55,7 +56,12 @@ export const LoginForm = () => {
       displayName,
       email: userEmail,
       phoneNumber,
-      photoURL
+      photoURL,
+      userMetadata: {
+        creationTime: metadata.creationTime,
+        lastSignInTime: metadata.lastSignInTime,
+        lastAuthTime: Date.now()
+      }
     }
 
     setUserData(user)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 
 import LoginRouter from './Routes/login-router'
 import Router from './Routes/Router'
@@ -17,10 +17,15 @@ const App = () => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const { uid } = user
-        const docSnap = await getDoc(doc(db, 'users', uid))
+        const userDocRef = doc(db, 'users', uid)
+        const docSnap = await getDoc(userDocRef)
 
         if (docSnap.exists()) {
-          const { displayName, email, phoneNumber, photoURL } = docSnap.data()
+          const { displayName, email, phoneNumber, photoURL, userMetadata } =
+            docSnap.data()
+          await updateDoc(userDocRef, {
+            userMetadata: { ...userMetadata, lastAuthTime: Date.now() }
+          })
           setUserData({ uid, displayName, email, phoneNumber, photoURL })
         }
 

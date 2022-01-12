@@ -8,7 +8,10 @@ export const MainSidebar = () => {
     <div className={styles.sidebar}>
       <div className={styles.linksGroup}>
         <span className={styles.groupTitle}>Chats 💬</span>
-        <Link to='common'># Common chat</Link>
+        <Link to='/common'># Common chat</Link>
+      </div>
+      <div className={styles.linksGroup}>
+        <Link to='/users'># users</Link>
       </div>
     </div>
   )

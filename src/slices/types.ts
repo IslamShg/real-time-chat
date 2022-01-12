@@ -5,4 +5,11 @@ export type userDataType = {
   phoneNumber: string | null
   photoURL: string | null
   emailVerified?: boolean
+  userMetadata?: {
+    createdAt?: string
+    creationTime?: string
+    lastLoginAt?: string
+    lastSignInTime?: string
+    lastAuthTime?: number
+  }
 }
