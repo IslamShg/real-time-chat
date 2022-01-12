@@ -21,7 +21,7 @@ export const userSlice = createSlice({
   name: 'user-slice',
   initialState,
   reducers: {
-    setUserData(state, { payload }) {
+    setUserData(state: userStateType, { payload }): void {
       state.userData = { ...state.userData, ...payload }
     }
   }

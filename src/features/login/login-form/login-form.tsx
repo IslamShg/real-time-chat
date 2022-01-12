@@ -7,9 +7,11 @@ import { Form, Formik, FormikProps } from 'formik'
 
 import { validation } from '../login-validation'
 import { LoginInput } from '../login-input'
-import { auth } from '../../../configs/firebase-config'
+import { auth, db } from '../../../configs/firebase-config'
 import { useUserActionCreators } from '../../../slices/user-slice'
 import styles from './login-form.module.scss'
+import { doc, setDoc } from 'firebase/firestore'
+import { userDataType } from '../../../slices/types'
 
 type FormValuesType = {
   email: string
@@ -23,16 +25,17 @@ export const LoginForm = () => {
 
   const signIn = async ({ email, password }: FormValuesType): Promise<void> => {
     try {
-      const userCreds = await signInWithEmailAndPassword(auth, email, password)
-      const {
-        uid,
-        displayName,
-        email: userEmail,
-        phoneNumber,
-        photoURL
-      } = userCreds.user
+      // const userCreds =
+      await signInWithEmailAndPassword(auth, email, password)
+      // const {
+      //   uid,
+      //   displayName,
+      //   email: userEmail,
+      //   phoneNumber,
+      //   photoURL
+      // } = userCreds.user
 
-      setUserData({ uid, displayName, phoneNumber, photoURL, email: userEmail })
+      // setUserData({ uid, displayName, phoneNumber, photoURL, email: userEmail })
     } catch (e) {
       if (e.code === 'auth/user-not-found') {
         setSignInError('An account with such an email was not found')
@@ -57,7 +60,16 @@ export const LoginForm = () => {
       photoURL
     } = userCreds.user
 
-    setUserData({ uid, displayName, phoneNumber, photoURL, email: userEmail })
+    const user: userDataType = {
+      uid,
+      displayName,
+      email: userEmail,
+      phoneNumber,
+      photoURL
+    }
+
+    setUserData(user)
+    await setDoc(doc(db, 'users', uid), user)
   }
 
   return (
