@@ -7,12 +7,16 @@ import {
 import { useEffect, useState } from 'react'
 
 export const useFirestoreQuery = (query: Query<DocumentData>) => {
-  const [messages, setMessages] = useState<QuerySnapshot<DocumentData>>()
+  const [snapshot, setSnapshot] = useState<QuerySnapshot<DocumentData>>()
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    const unsub = onSnapshot(query, (sn) => setMessages(sn))
+    const unsub = onSnapshot(query, (sn) => {
+      setLoading(false)
+      setSnapshot(sn)
+    })
     return () => unsub()
   }, [query])
 
-  return { messagesSnapshot: messages }
+  return { snapshot, loading }
 }

@@ -58,12 +58,11 @@ export const LoginForm = () => {
       phoneNumber,
       photoURL,
       userMetadata: {
-        creationTime: metadata.creationTime,
+        creationTime: Date.now(),
         lastSignInTime: metadata.lastSignInTime,
         lastAuthTime: Date.now()
       }
     }
-
     setUserData(user)
     await setDoc(doc(db, 'users', uid), user)
   }

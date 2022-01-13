@@ -1,0 +1,27 @@
+.card {
+  padding: 8px;
+  border-radius: 6px;
+  background-color: rgb(247, 242, 242);
+  font-family: 'Roboto', serif;
+  .cardLeft {
+    display: flex;
+    gap: 10px;
+    .avatarImg {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+    .userInfo {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2px 0;
+      font-size: 15px;
+      .userMetadata {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+      }
+    }
+  }
+}

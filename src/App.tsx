@@ -26,7 +26,13 @@ const App = () => {
           await updateDoc(userDocRef, {
             userMetadata: { ...userMetadata, lastAuthTime: Date.now() }
           })
-          setUserData({ uid, displayName, email, phoneNumber, photoURL })
+          setUserData({
+            uid,
+            displayName,
+            email,
+            phoneNumber,
+            photoURL
+          })
         }
 
         setIsUserAuth(true)

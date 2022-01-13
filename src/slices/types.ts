@@ -6,8 +6,8 @@ export type userDataType = {
   photoURL: string | null
   emailVerified?: boolean
   userMetadata?: {
+    creationTime?: number
     createdAt?: string
-    creationTime?: string
     lastLoginAt?: string
     lastSignInTime?: string
     lastAuthTime?: number

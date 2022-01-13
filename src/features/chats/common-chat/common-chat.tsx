@@ -27,12 +27,12 @@ export const CommonChat = () => {
       query(collection(db, 'common-chat-messages'), orderBy('sentTime', 'asc')),
     []
   )
-  const { messagesSnapshot } = useFirestoreQuery(messagesQuery)
+  const { snapshot, loading } = useFirestoreQuery(messagesQuery)
 
   useEffect(() => {
     const scrollHeight = messagesContainerRef.current?.scrollHeight || 0
     messagesContainerRef.current?.scrollTo(0, scrollHeight)
-  }, [messagesSnapshot])
+  }, [snapshot])
 
   const sendMessage = async (): Promise<void> => {
     if (!messageInput.length) return console.log('123')
@@ -52,9 +52,11 @@ export const CommonChat = () => {
   return (
     <div className={styles.container}>
       <div className={styles.messagesContainer} ref={messagesContainerRef}>
-        {messagesSnapshot?.docs.map((doc) => (
-          <ChatMessage key={doc.id} message={doc.data()} />
-        ))}
+        {!loading
+          ? snapshot?.docs.map((doc) => (
+              <ChatMessage key={doc.id} message={doc.data()} />
+            ))
+          : '...loading'}
       </div>
       <div className={styles.inputContainer}>
         <FixedInput
