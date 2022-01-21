@@ -9,7 +9,7 @@ type userStateType = {
 
 const initialState: userStateType = {
   userData: {
-    uid: null,
+    uid: '',
     displayName: null,
     email: null,
     phoneNumber: null,

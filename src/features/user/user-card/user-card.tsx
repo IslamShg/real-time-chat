@@ -1,5 +1,8 @@
 import { DocumentData } from 'firebase/firestore'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { RootState } from '../../../slices/root-state'
 
 import { userDataType } from '../../../slices/types'
 import styles from './user-card.module.scss'
@@ -9,7 +12,7 @@ type Props = {
 }
 
 export const UserCard: React.FC<Props> = ({ userData }) => {
-  console.log(userData)
+  const { uid } = useSelector((s: RootState) => s.user.userData)
   const userRegisterTime = new Date(
     userData.userMetadata.creationTime
   ).toDateString()
@@ -34,6 +37,13 @@ export const UserCard: React.FC<Props> = ({ userData }) => {
             <span>Last login: {userLastLogin}</span>
           </div>
         </div>
+      </div>
+      <div className={styles.cardRight}>
+        {uid !== userData.uid && (
+          <Link className={styles.messageBtn} to={`message/${userData.uid}`}>
+            Message
+          </Link>
+        )}
       </div>
     </div>
   )

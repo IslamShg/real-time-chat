@@ -57,6 +57,7 @@ export const LoginForm = () => {
       email: userEmail,
       phoneNumber,
       photoURL,
+      chats: [],
       userMetadata: {
         creationTime: Date.now(),
         lastSignInTime: metadata.lastSignInTime,

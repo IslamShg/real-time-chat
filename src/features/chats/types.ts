@@ -9,3 +9,9 @@ export type MessageType = {
   authorEmail: string | null
   authorAvatarUrl?: string | null
 }
+
+export type ChatType = {
+  receiverEmail: string | null
+  receiverName: string | null
+  messages: MessageType[]
+}
