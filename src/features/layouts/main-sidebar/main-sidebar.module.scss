@@ -1,0 +1,23 @@
+.sidebar {
+  width: 300px;
+  background-color: #3f0f40;
+  border-top: 1px solid #ccc;
+  font-family: 'Roboto', serif;
+
+  .linksGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid #ccc;
+    padding: 20px 20px 20px 20px;
+    a {
+      color: #fff;
+      font-size: 15px;
+    }
+    .groupTitle {
+      margin-bottom: 6px;
+      font-size: 20px;
+      color: #fff;
+    }
+  }
+}

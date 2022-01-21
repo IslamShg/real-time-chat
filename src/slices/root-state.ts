@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
-import { MainSlice } from './main-slice/main-slice'
+import { userSlice } from './user-slice'
 
 export const store = configureStore({
   reducer: {
-    main: MainSlice.reducer
+    user: userSlice.reducer
   }
 })
 

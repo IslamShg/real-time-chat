@@ -9,7 +9,7 @@ module.exports = {
     extensions: ['.ts', '.js', '.tsx', '.jsx']
   },
   output: {
-    filename: '[hash].bundle.js',
+    filename: '[fullhash].bundle.js',
     path: path.resolve(__dirname, '..', './build'),
     publicPath: '/'
   },
@@ -25,7 +25,7 @@ module.exports = {
         use: ['babel-loader', 'ts-loader']
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\.(?:ico|png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource'
       }
     ]

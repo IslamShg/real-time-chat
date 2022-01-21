@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --env env=dev --config webpack/webpack.config.js",
-    "build": "webpack --env env=prod --config webpack/webpack.config.js",
+    "build": "CI=false && webpack --env env=prod --config webpack/webpack.config.js",
     "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,css,scss,md,json}\""
   },
@@ -31,13 +31,13 @@
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.6",
     "@reduxjs/toolkit": "^1.7.1",
-    "@types/firebase": "^3.2.1",
     "clsx": "^1.1.1",
     "dotenv-webpack": "^7.0.3",
     "firebase": "^9.6.1",
     "formik": "^2.2.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-firebase-hooks": "^4.0.1",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "yup": "^0.32.11"

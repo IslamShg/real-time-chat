@@ -1,5 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
+
 import { firebaseConfigType } from './types'
 
 export const firebaseConfig: firebaseConfigType = {
@@ -13,3 +15,4 @@ export const firebaseConfig: firebaseConfigType = {
 
 export const app = initializeApp(firebaseConfig)
 export const auth = getAuth()
+export const db = getFirestore()
