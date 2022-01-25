@@ -39,7 +39,7 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
     useFirestoreQuery(getChatMessagesQuery)
 
   const sendMessage = async () => {
-    if (!messageInput.length) return console.log('123')
+    if (!messageInput.length) return
     const message: MessageType = {
       authorName: displayName,
       authorEmail: email,
@@ -50,31 +50,40 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
     }
 
     const receiverDocSnap = await getDoc(doc(db, 'users', otherUserUid))
-    const chatDocSnap = await getDoc(
-      doc(db, `users/${uid}/chats/${otherUserUid}`)
-    )
+    const docRef = doc(db, `users/${uid}/chats/${otherUserUid}`)
+    const chatDocSnap = await getDoc(docRef)
     setMessageInput('')
 
     if (!chatDocSnap.exists() && receiverDocSnap.exists()) {
-      await setDoc(doc(db, `users/${uid}/chats`, otherUserUid), {
-        receiverName: receiverDocSnap.data().displayName,
-        receiverEmail: receiverDocSnap.data().email
-      })
-      await setDoc(doc(db, `users/${otherUserUid}/chats`, uid), {
-        receiverEmail: email,
-        receiverName: displayName
-      })
+      await Promise.all([
+        setDoc(doc(db, `users/${uid}/chats`, otherUserUid), {
+          receiverName: receiverDocSnap.data().displayName,
+          receiverEmail: receiverDocSnap.data().email
+        }),
+        setDoc(doc(db, `users/${otherUserUid}/chats`, uid), {
+          receiverEmail: email,
+          receiverName: displayName
+        })
+      ])
     }
 
     if (receiverDocSnap.exists()) {
-      await addDoc(
-        collection(db, `users/${uid}/chats/${otherUserUid}/messagesCollection`),
-        message
-      )
-      await addDoc(
-        collection(db, `users/${otherUserUid}/chats/${uid}/messagesCollection`),
-        message
-      )
+      await Promise.all([
+        addDoc(
+          collection(
+            db,
+            `users/${uid}/chats/${otherUserUid}/messagesCollection`
+          ),
+          message
+        ),
+        addDoc(
+          collection(
+            db,
+            `users/${otherUserUid}/chats/${uid}/messagesCollection`
+          ),
+          message
+        )
+      ])
     }
   }
 
