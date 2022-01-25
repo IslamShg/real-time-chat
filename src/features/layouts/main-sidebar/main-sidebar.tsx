@@ -15,7 +15,6 @@ export const MainSidebar = () => {
     [uid]
   )
   const { snapshot } = useFirestoreQuery(getChatsQuery)
-  snapshot?.docs.map((doc) => console.log(doc.data()))
 
   return (
     <div className={styles.sidebar}>
