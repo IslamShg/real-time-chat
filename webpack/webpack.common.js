@@ -8,6 +8,9 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.tsx', '.jsx']
   },
+  performance: {
+    hints: false
+  },
   output: {
     filename: '[fullhash].bundle.js',
     path: path.resolve(__dirname, '..', './build'),
