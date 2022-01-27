@@ -36,11 +36,17 @@ export const ChatLayout: React.FC<Props> = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.receiverInfo}>
-        <span className={styles.receiverName}>
-          {receiverData?.displayName || receiverData?.email}
-        </span>
-      </div>
+      {receiverData ? (
+        <div className={styles.receiverInfo}>
+          <span className={styles.receiverName}>
+            {receiverData?.displayName || receiverData?.email}
+          </span>
+        </div>
+      ) : (
+        <div className={styles.receiverInfo}>
+          <span className={styles.receiverName}>Common chat</span>
+        </div>
+      )}
       <div className={styles.messagesContainer} ref={messagesContainerRef}>
         {commonMessagesSnapshot
           ? commonMessagesSnapshot?.docs.map((doc) => (

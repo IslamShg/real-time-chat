@@ -64,13 +64,14 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
   }, [chatMessagesSnapshot])
 
   useEffect(() => {
+    document.body.style.overflow = 'hidden'
     const getReceiverData = async () => {
       const sn = await getDoc(doc(db, 'users', otherUserUid))
       setReceiverDocSnap(sn)
       setReceiverData(sn.data())
     }
     getReceiverData()
-  }, [])
+  }, [otherUserUid])
 
   const sendMessage = async () => {
     if (!messageInput.length) return
