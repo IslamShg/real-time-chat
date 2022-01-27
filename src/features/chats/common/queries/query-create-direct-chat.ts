@@ -25,11 +25,13 @@ export const createDirectChats = async ({
   await Promise.all([
     setDoc(doc(db, `users/${uid}/chats`, otherUserUid), {
       receiverName: receiverDocSnap.data().displayName,
-      receiverEmail: receiverDocSnap.data().email
+      receiverEmail: receiverDocSnap.data().email,
+      unreads: []
     }),
     setDoc(doc(db, `users/${otherUserUid}/chats`, uid), {
       receiverEmail: userEmail,
-      receiverName: userDisplayName
+      receiverName: userDisplayName,
+      unreads: []
     })
   ])
 }
