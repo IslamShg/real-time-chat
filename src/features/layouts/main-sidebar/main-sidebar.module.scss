@@ -19,5 +19,24 @@
       font-size: 20px;
       color: #fff;
     }
+
+    .chatLink {
+      .chatName {
+        position: relative;
+        .chatBadge {
+          position: absolute;
+          top: -10px;
+          right: -15px;
+
+          display: grid;
+          place-items: center;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background-color: red;
+          font-size: 12px;
+        }
+      }
+    }
   }
 }

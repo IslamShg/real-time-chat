@@ -16,19 +16,25 @@ export const MainSidebar = () => {
   )
   const { snapshot } = useFirestoreQuery(getChatsQuery)
 
-  // snapshot?.docs.map((doc) =>
-  //   console.log(!!doc.data().undreads && doc?.data()?.unreads?.length)
-  // )
-
   return (
     <div className={styles.sidebar}>
       <div className={styles.linksGroup}>
         <span className={styles.groupTitle}>Chats 💬</span>
         <Link to='/common'># Common chat</Link>
         {snapshot?.docs.map((doc) => (
-          <Link key={doc.id} to={`/users/message/${doc.id}`}>
-            # {doc.data().receiverName || doc.data().receiverEmail} -
-            {!!doc.data().unreads && doc.data().unreads.length}
+          <Link
+            key={doc.id}
+            to={`/users/message/${doc.id}`}
+            className={styles.chatLink}
+          >
+            <span className={styles.chatName}>
+              # {doc.data().receiverName || doc.data().receiverEmail}
+              {doc?.data()?.unreads?.length > 0 && (
+                <span className={styles.chatBadge}>
+                  {doc.data().unreads.length}
+                </span>
+              )}
+            </span>
           </Link>
         ))}
       </div>

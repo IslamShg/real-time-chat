@@ -22,7 +22,10 @@ export const CommonChat = () => {
 
   const messagesQuery: Query<DocumentData> = useMemo(
     () =>
-      query(collection(db, 'common-chat-messages'), orderBy('sentTime', 'asc')),
+      query(
+        collection(db, 'common-chat-messages'),
+        orderBy('timestamp', 'asc')
+      ),
     []
   )
   const { snapshot, loading } = useFirestoreQuery(messagesQuery)
@@ -34,8 +37,9 @@ export const CommonChat = () => {
       authorEmail: userData.email,
       isEdited: false,
       text: messageInput,
-      sentTime: Timestamp.now(),
-      authorAvatarUrl: userData.photoURL
+      sentTime: Date.now(),
+      authorAvatarUrl: userData.photoURL,
+      timestamp: Timestamp.now()
     }
 
     setMessageInput('')

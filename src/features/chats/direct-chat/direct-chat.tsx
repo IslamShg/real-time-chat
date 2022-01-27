@@ -5,6 +5,7 @@ import {
   DocumentData,
   DocumentSnapshot,
   getDoc,
+  onSnapshot,
   orderBy,
   query,
   updateDoc
@@ -53,21 +54,23 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
     useFirestoreQuery(getChatMessagesQuery)
 
   useEffect(() => {
-    markAsRead()
     if (chatMessagesSnapshot?.docs) {
-      const docsData = chatMessagesSnapshot?.docs.map((doc) => {
-        return {
-          id: doc.data().id,
-          authorAvatarUrl: doc.data().authorAvatarUrl,
-          authorEmail: doc.data().authorEmail,
-          authorName: doc.data().authorName,
-          isEdited: doc.data().isEdited,
-          sentTime: doc.data().timestamp.seconds,
-          text: doc.data().text
-        }
-      })
+      const docsData = chatMessagesSnapshot?.docs.map((doc) => ({
+        id: doc.data().id,
+        authorAvatarUrl: doc.data().authorAvatarUrl,
+        authorEmail: doc.data().authorEmail,
+        authorName: doc.data().authorName,
+        isEdited: doc.data().isEdited,
+        sentTime: doc.data().timestamp.seconds,
+        text: doc.data().text
+      }))
       setDirectChatMessages(docsData)
     }
+
+    const unsubscribe = onSnapshot(userChatDocRef, () =>
+      setTimeout(markAsRead, 2500)
+    )
+    return () => unsubscribe()
   }, [chatMessagesSnapshot])
 
   useEffect(() => {
