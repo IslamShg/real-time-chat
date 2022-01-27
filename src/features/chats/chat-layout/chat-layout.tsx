@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 
 import { ChatMessage, FixedInput } from '..'
-import { MessageType } from '../types'
+import { MessageType } from '../common/types'
 import styles from './chat-layout.module.scss'
 import { userDataType } from '../../../slices/types'
 
@@ -47,21 +47,23 @@ export const ChatLayout: React.FC<Props> = ({
           <span className={styles.receiverName}>Common chat</span>
         </div>
       )}
-      <div className={styles.messagesContainer} ref={messagesContainerRef}>
-        {commonMessagesSnapshot
-          ? commonMessagesSnapshot?.docs.map((doc) => (
-              <ChatMessage key={doc.id} message={doc.data()} />
-            ))
-          : chatMessages?.map((message) => (
-              <ChatMessage key={message.id} message={message} />
-            ))}
-      </div>
-      <div className={styles.inputContainer}>
-        <FixedInput
-          onEnter={() => sendMessage()}
-          value={inputValue}
-          onChange={onValueChange}
-        />
+      <div className={styles.content}>
+        <div className={styles.messagesContainer} ref={messagesContainerRef}>
+          {commonMessagesSnapshot
+            ? commonMessagesSnapshot?.docs.map((doc) => (
+                <ChatMessage key={doc.id} message={doc.data()} />
+              ))
+            : chatMessages?.map((message) => (
+                <ChatMessage key={message.id} message={message} />
+              ))}
+        </div>
+        <div className={styles.inputContainer}>
+          <FixedInput
+            onEnter={() => sendMessage()}
+            value={inputValue}
+            onChange={onValueChange}
+          />
+        </div>
       </div>
     </div>
   )

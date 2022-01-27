@@ -14,7 +14,7 @@ import { ChatLayout } from '..'
 import { db } from '../../../configs/firebase-config'
 import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
 import { RootState } from '../../../slices/root-state'
-import { MessageType } from '../types'
+import { MessageType } from '../common/types'
 
 export const CommonChat = () => {
   const [messageInput, setMessageInput] = useState<string>('')

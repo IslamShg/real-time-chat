@@ -1,7 +1,7 @@
 import { addDoc, collection, Timestamp } from 'firebase/firestore'
 
 import { db } from '../../../../configs/firebase-config'
-import { MessageType } from '../../types'
+import { MessageType } from '../types'
 
 type FuncArgs = {
   uid: string

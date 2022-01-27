@@ -15,7 +15,7 @@ import { ChatLayout } from '..'
 import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
 import { db } from '../../../configs/firebase-config'
 import { RootState } from '../../../slices/root-state'
-import { MessageType } from '../types'
+import { MessageType } from '../common/types'
 import { useChatsActions } from '../chats-slice'
 import { addMessageToCollections, createDirectChats } from '../common'
 import { userDataType } from '../../../slices/types'
@@ -31,6 +31,8 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
   const { uid, displayName, photoURL, email } = useSelector(
     (s: RootState) => s.user.userData
   )
+  const [isChatExisting, setIsChatExisting] = useState<boolean>(false)
+
   const { directChatMessages } = useSelector((s: RootState) => s.chats)
   const { setDirectChatMessages, addDirectMessage, setReceiverData } =
     useChatsActions()
@@ -70,8 +72,18 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
       setReceiverDocSnap(sn)
       setReceiverData(sn.data())
     }
+    const checkIsChatExists = async () => {
+      const chatDocSnap = await getDoc(
+        doc(db, `users/${uid}/chats/${otherUserUid}`)
+      )
+      chatDocSnap.exists() ? setIsChatExisting(true) : setIsChatExisting(false)
+    }
+
+    checkIsChatExists()
     getReceiverData()
   }, [otherUserUid])
+
+  console.log(isChatExisting)
 
   const sendMessage = async () => {
     if (!messageInput.length) return
@@ -87,10 +99,7 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
     addDirectMessage(message)
     setMessageInput('')
 
-    const docRef = doc(db, `users/${uid}/chats/${otherUserUid}`)
-    const chatDocSnap = await getDoc(docRef)
-
-    if (!chatDocSnap.exists() && receiverDocSnap?.exists()) {
+    if (!isChatExisting && receiverDocSnap?.exists()) {
       await createDirectChats({
         uid,
         otherUserUid,
