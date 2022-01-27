@@ -2,8 +2,9 @@ import { DocumentData } from 'firebase/firestore'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { RootState } from '../../../slices/root-state'
 
+import { RootState } from '../../../slices/root-state'
+import defaultUserImage from '../../../assets/default-user-icon.jpg'
 import { userDataType } from '../../../slices/types'
 import styles from './user-card.module.scss'
 
@@ -25,7 +26,7 @@ export const UserCard: React.FC<Props> = ({ userData }) => {
       <div className={styles.cardLeft}>
         <img
           className={styles.avatarImg}
-          src='https://dmitrovipoteka.ru/wp-content/uploads/2016/09/default-user-img.jpg'
+          src={userData.photoURL || defaultUserImage}
           alt=''
         />
         <div className={styles.userInfo}>

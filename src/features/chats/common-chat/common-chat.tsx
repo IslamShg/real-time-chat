@@ -14,7 +14,7 @@ import { ChatLayout } from '..'
 import { db } from '../../../configs/firebase-config'
 import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
 import { RootState } from '../../../slices/root-state'
-import { MessageType } from '../types'
+import { MessageType } from '../common/types'
 
 export const CommonChat = () => {
   const [messageInput, setMessageInput] = useState<string>('')
@@ -28,7 +28,7 @@ export const CommonChat = () => {
   const { snapshot, loading } = useFirestoreQuery(messagesQuery)
 
   const sendMessage = async (): Promise<void> => {
-    if (!messageInput.length) return console.log('123')
+    if (!messageInput.length) return
     const message: MessageType = {
       authorName: userData.displayName,
       authorEmail: userData.email,

@@ -8,11 +8,11 @@ type ChatMessageProps = {
   message: DocumentData
 }
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({
+const Component: React.FC<ChatMessageProps> = ({
   message: { text, authorName, authorEmail, photoURL, sentTime }
 }) => {
-  const time = new Date(sentTime?.toDate()).toTimeString().slice(0, 5)
-  const date = new Date(sentTime?.toDate()).toDateString().slice(4, 10)
+  const time = new Date(sentTime).toLocaleTimeString('en')
+  const date = new Date(sentTime).toLocaleDateString()
 
   return (
     <div className={styles.message}>
@@ -33,3 +33,5 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     </div>
   )
 }
+
+export const ChatMessage = React.memo(Component)

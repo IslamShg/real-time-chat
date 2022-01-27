@@ -1,9 +1,9 @@
 import { Timestamp } from 'firebase/firestore'
 
 export type MessageType = {
-  id?: number
+  id?: number | string
   authorName: string | null
-  sentTime: Timestamp
+  sentTime: Timestamp | string | number
   isEdited: boolean
   text: string
   authorEmail: string | null
