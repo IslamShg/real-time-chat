@@ -5,8 +5,10 @@ import {
   DocumentData,
   DocumentSnapshot,
   getDoc,
+  onSnapshot,
   orderBy,
-  query
+  query,
+  updateDoc
 } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
 
@@ -26,9 +28,14 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
   const [messageInput, setMessageInput] = useState<string>('')
   const [receiverDocSnap, setReceiverDocSnap] =
     useState<DocumentSnapshot<DocumentData>>()
-  const { uid } = useSelector((s: RootState) => s.user.userData)
+  const [isChatExisting, setIsChatExisting] = useState<boolean>(false)
+
   const { directChatMessages } = useSelector((s: RootState) => s.chats)
+  const { uid } = useSelector((s: RootState) => s.user.userData)
   const { setDirectChatMessages, setReceiverData } = useChatsActions()
+
+  const receiverChatDocRef = doc(db, `users/${otherUserUid}/chats/${uid}`)
+  const userChatDocRef = doc(db, `users/${uid}/chats/${otherUserUid}`)
 
   const getChatMessagesQuery = useMemo(
     () =>
@@ -54,6 +61,11 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
       }))
       setDirectChatMessages(docsData)
     }
+
+    const unsubscribe = onSnapshot(userChatDocRef, () =>
+      setTimeout(markAsRead, 2500)
+    )
+    return () => unsubscribe()
   }, [chatMessagesSnapshot])
 
   useEffect(() => {
@@ -63,6 +75,12 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
       setReceiverDocSnap(sn)
       setReceiverData(sn.data())
     }
+    const checkIsChatExists = async () => {
+      const chatDocSnap = await getDoc(userChatDocRef)
+      chatDocSnap.exists() ? setIsChatExisting(true) : setIsChatExisting(false)
+    }
+
+    checkIsChatExists()
     getReceiverData()
   }, [otherUserUid])
 
@@ -70,8 +88,16 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
     partnerId: otherUserUid,
     partnerDocSnap: receiverDocSnap,
     setMessageInput,
-    messageText: messageInput
+    messageText: messageInput,
+    partnerChatDocRef: receiverChatDocRef,
+    isChatExisting
   })
+
+  const markAsRead = async () => {
+    await updateDoc(userChatDocRef, {
+      unreads: []
+    })
+  }
 
   return (
     <ChatLayout

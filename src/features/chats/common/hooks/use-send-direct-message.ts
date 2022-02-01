@@ -1,8 +1,13 @@
 import { nanoid } from 'nanoid'
-import { DocumentSnapshot, DocumentData, doc, getDoc } from 'firebase/firestore'
+import {
+  DocumentSnapshot,
+  DocumentData,
+  getDoc,
+  updateDoc,
+  DocumentReference
+} from 'firebase/firestore'
 import { useSelector } from 'react-redux'
 
-import { db } from '../../../../shared/configs/firebase-config'
 import { useChatsActions } from '../chats-slice'
 import { addMessageToCollections, createDirectChats } from '../queries'
 import { MessageType } from '../types'
@@ -13,13 +18,17 @@ type Props = {
   messageText: string
   partnerDocSnap?: DocumentSnapshot<DocumentData>
   setMessageInput: (val: string) => void
+  partnerChatDocRef: DocumentReference<DocumentData>
+  isChatExisting: boolean
 }
 
 export const useSendDirectMessage = ({
   partnerId,
   messageText,
   partnerDocSnap,
-  setMessageInput
+  setMessageInput,
+  partnerChatDocRef,
+  isChatExisting
 }: Props) => {
   const { addDirectMessage } = useChatsActions()
   const { uid, displayName, photoURL, email } = useSelector(
@@ -28,8 +37,10 @@ export const useSendDirectMessage = ({
 
   return async () => {
     if (!messageText.length) return
+
+    const id = nanoid()
     const message: MessageType = {
-      id: nanoid(),
+      id,
       authorName: displayName,
       authorEmail: email,
       isEdited: false,
@@ -40,10 +51,7 @@ export const useSendDirectMessage = ({
     addDirectMessage(message)
     setMessageInput('')
 
-    const docRef = doc(db, `users/${uid}/chats/${partnerId}`)
-    const chatDocSnap = await getDoc(docRef)
-
-    if (!chatDocSnap.exists() && partnerDocSnap?.exists()) {
+    if (!isChatExisting && partnerDocSnap?.exists()) {
       await createDirectChats({
         uid,
         partnerId,
@@ -52,8 +60,16 @@ export const useSendDirectMessage = ({
         userDisplayName: displayName
       })
     }
+
     if (partnerDocSnap?.exists()) {
       await addMessageToCollections({ uid, partnerId, message })
+    }
+
+    const partnerChatDocSnap = await getDoc(partnerChatDocRef)
+    if (partnerChatDocSnap?.exists()) {
+      await updateDoc(partnerChatDocRef, {
+        unreads: [...partnerChatDocSnap?.data().unreads, { messageId: id }]
+      })
     }
   }
 }
