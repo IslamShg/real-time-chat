@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 
-import LoginRouter from './Routes/login-router'
-import Router from './Routes/Router'
-import { auth, db } from './configs/firebase-config'
+import LoginRouter from './routes/login-router'
+import Router from './routes/Router'
+import { auth, db } from './shared/configs/firebase-config'
 import { useUserActionCreators } from './slices/user-slice'
 import './styles/index.scss'
 

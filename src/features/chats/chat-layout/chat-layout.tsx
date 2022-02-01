@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 
 import { ChatMessage, FixedInput } from '..'
-import { MessageType } from '../types'
+import { MessageType } from '../common/types'
 import styles from './chat-layout.module.scss'
 import { userDataType } from '../../../slices/types'
 

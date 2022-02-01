@@ -1,7 +1,7 @@
 import { bindActionCreators, createSlice } from '@reduxjs/toolkit'
 
-import { useAppDispatch } from '../../slices/root-state'
-import { userDataType } from '../../slices/types'
+import { useAppDispatch } from '../../../slices/root-state'
+import { userDataType } from '../../../slices/types'
 import { MessageType } from './types'
 
 type State = {

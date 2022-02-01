@@ -9,16 +9,14 @@ import {
   query
 } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
-import { nanoid } from 'nanoid'
 
 import { ChatLayout } from '..'
 import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
-import { db } from '../../../configs/firebase-config'
+import { db } from '../../../shared/configs/firebase-config'
 import { RootState } from '../../../slices/root-state'
-import { MessageType } from '../types'
-import { useChatsActions } from '../chats-slice'
-import { addMessageToCollections, createDirectChats } from '../common'
+import { useChatsActions } from '../common/chats-slice'
 import { userDataType } from '../../../slices/types'
+import { useSendDirectMessage } from '../common/hooks/use-send-direct-message'
 
 type Props = {
   otherUserUid: string
@@ -28,12 +26,9 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
   const [messageInput, setMessageInput] = useState<string>('')
   const [receiverDocSnap, setReceiverDocSnap] =
     useState<DocumentSnapshot<DocumentData>>()
-  const { uid, displayName, photoURL, email } = useSelector(
-    (s: RootState) => s.user.userData
-  )
+  const { uid } = useSelector((s: RootState) => s.user.userData)
   const { directChatMessages } = useSelector((s: RootState) => s.chats)
-  const { setDirectChatMessages, addDirectMessage, setReceiverData } =
-    useChatsActions()
+  const { setDirectChatMessages, setReceiverData } = useChatsActions()
 
   const getChatMessagesQuery = useMemo(
     () =>
@@ -48,17 +43,15 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
 
   useEffect(() => {
     if (chatMessagesSnapshot?.docs) {
-      const docsData = chatMessagesSnapshot?.docs.map((doc) => {
-        return {
-          id: doc.data().id,
-          authorAvatarUrl: doc.data().authorAvatarUrl,
-          authorEmail: doc.data().authorEmail,
-          authorName: doc.data().authorName,
-          isEdited: doc.data().isEdited,
-          sentTime: doc.data().timestamp.seconds,
-          text: doc.data().text
-        }
-      })
+      const docsData = chatMessagesSnapshot?.docs.map((doc) => ({
+        id: doc.data().id,
+        authorAvatarUrl: doc.data().authorAvatarUrl,
+        authorEmail: doc.data().authorEmail,
+        authorName: doc.data().authorName,
+        isEdited: doc.data().isEdited,
+        sentTime: doc.data().timestamp.seconds,
+        text: doc.data().text
+      }))
       setDirectChatMessages(docsData)
     }
   }, [chatMessagesSnapshot])
@@ -73,36 +66,12 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
     getReceiverData()
   }, [otherUserUid])
 
-  const sendMessage = async () => {
-    if (!messageInput.length) return
-    const message: MessageType = {
-      id: nanoid(),
-      authorName: displayName,
-      authorEmail: email,
-      isEdited: false,
-      text: messageInput,
-      sentTime: Date.now(),
-      authorAvatarUrl: photoURL
-    }
-    addDirectMessage(message)
-    setMessageInput('')
-
-    const docRef = doc(db, `users/${uid}/chats/${otherUserUid}`)
-    const chatDocSnap = await getDoc(docRef)
-
-    if (!chatDocSnap.exists() && receiverDocSnap?.exists()) {
-      await createDirectChats({
-        uid,
-        otherUserUid,
-        receiverDocSnap,
-        userEmail: email,
-        userDisplayName: displayName
-      })
-    }
-    if (receiverDocSnap?.exists()) {
-      await addMessageToCollections({ uid, otherUserUid, message })
-    }
-  }
+  const sendMessage = useSendDirectMessage({
+    partnerId: otherUserUid,
+    partnerDocSnap: receiverDocSnap,
+    setMessageInput,
+    messageText: messageInput
+  })
 
   return (
     <ChatLayout

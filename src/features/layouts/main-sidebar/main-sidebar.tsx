@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { RootState } from '../../../slices/root-state'
-import { db } from '../../../configs/firebase-config'
+import { db } from '../../../shared/configs/firebase-config'
 import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
 import styles from './main-sidebar.module.scss'
 
