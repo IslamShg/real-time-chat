@@ -41,6 +41,9 @@ export const MainSidebar = () => {
       <div className={styles.linksGroup}>
         <Link to='/users'># users</Link>
       </div>
+      <div className={styles.linksGroup}>
+        <Link to='/movies'># movies</Link>
+      </div>
     </div>
   )
 }
