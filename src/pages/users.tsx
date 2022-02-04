@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { collection, orderBy, query } from 'firebase/firestore'
 
-import { db } from '../configs/firebase-config'
+import { db } from '../shared/configs/firebase-config'
 import { UsersList } from '../features'
 import { useFirestoreQuery } from '../hooks/useFirestoreQuery'
 

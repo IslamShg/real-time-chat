@@ -5,21 +5,20 @@ import {
   DocumentData,
   DocumentSnapshot,
   getDoc,
+  onSnapshot,
   orderBy,
   query,
   updateDoc
 } from 'firebase/firestore'
 import { useSelector } from 'react-redux'
-import { nanoid } from 'nanoid'
 
 import { ChatLayout } from '..'
 import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
-import { db } from '../../../configs/firebase-config'
+import { db } from '../../../shared/configs/firebase-config'
 import { RootState } from '../../../slices/root-state'
-import { MessageType } from '../common/types'
-import { useChatsActions } from '../chats-slice'
-import { addMessageToCollections, createDirectChats } from '../common'
+import { useChatsActions } from '../common/chats-slice'
 import { userDataType } from '../../../slices/types'
+import { useSendDirectMessage } from '../common/hooks/use-send-direct-message'
 
 type Props = {
   otherUserUid: string
@@ -32,11 +31,8 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
   const [isChatExisting, setIsChatExisting] = useState<boolean>(false)
 
   const { directChatMessages } = useSelector((s: RootState) => s.chats)
-  const { uid, displayName, photoURL, email } = useSelector(
-    (s: RootState) => s.user.userData
-  )
-  const { setDirectChatMessages, addDirectMessage, setReceiverData } =
-    useChatsActions()
+  const { uid } = useSelector((s: RootState) => s.user.userData)
+  const { setDirectChatMessages, setReceiverData } = useChatsActions()
 
   const receiverChatDocRef = doc(db, `users/${otherUserUid}/chats/${uid}`)
   const userChatDocRef = doc(db, `users/${uid}/chats/${otherUserUid}`)
@@ -53,21 +49,23 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
     useFirestoreQuery(getChatMessagesQuery)
 
   useEffect(() => {
-    markAsRead()
     if (chatMessagesSnapshot?.docs) {
-      const docsData = chatMessagesSnapshot?.docs.map((doc) => {
-        return {
-          id: doc.data().id,
-          authorAvatarUrl: doc.data().authorAvatarUrl,
-          authorEmail: doc.data().authorEmail,
-          authorName: doc.data().authorName,
-          isEdited: doc.data().isEdited,
-          sentTime: doc.data().timestamp.seconds,
-          text: doc.data().text
-        }
-      })
+      const docsData = chatMessagesSnapshot?.docs.map((doc) => ({
+        id: doc.data().id,
+        authorAvatarUrl: doc.data().authorAvatarUrl,
+        authorEmail: doc.data().authorEmail,
+        authorName: doc.data().authorName,
+        isEdited: doc.data().isEdited,
+        sentTime: doc.data().timestamp.seconds,
+        text: doc.data().text
+      }))
       setDirectChatMessages(docsData)
     }
+
+    const unsubscribe = onSnapshot(userChatDocRef, () =>
+      setTimeout(markAsRead, 2500)
+    )
+    return () => unsubscribe()
   }, [chatMessagesSnapshot])
 
   useEffect(() => {
@@ -86,46 +84,19 @@ export const DirectChat: React.FC<Props> = ({ otherUserUid }) => {
     getReceiverData()
   }, [otherUserUid])
 
+  const sendMessage = useSendDirectMessage({
+    partnerId: otherUserUid,
+    partnerDocSnap: receiverDocSnap,
+    setMessageInput,
+    messageText: messageInput,
+    partnerChatDocRef: receiverChatDocRef,
+    isChatExisting
+  })
+
   const markAsRead = async () => {
     await updateDoc(userChatDocRef, {
       unreads: []
     })
-  }
-
-  const sendMessage = async () => {
-    if (!messageInput.length) return
-    const id = nanoid()
-    const message: MessageType = {
-      id,
-      authorName: displayName,
-      authorEmail: email,
-      isEdited: false,
-      text: messageInput,
-      sentTime: Date.now(),
-      authorAvatarUrl: photoURL
-    }
-    addDirectMessage(message)
-    setMessageInput('')
-
-    if (!isChatExisting && receiverDocSnap?.exists()) {
-      await createDirectChats({
-        uid,
-        otherUserUid,
-        receiverDocSnap,
-        userEmail: email,
-        userDisplayName: displayName
-      })
-    }
-    if (receiverDocSnap?.exists()) {
-      await addMessageToCollections({ uid, otherUserUid, message })
-
-      const receiverChatDocSnap = await getDoc(receiverChatDocRef)
-      if (receiverChatDocSnap.exists()) {
-        await updateDoc(receiverChatDocRef, {
-          unreads: [...receiverChatDocSnap.data().unreads, { messageId: id }]
-        })
-      }
-    }
   }
 
   return (

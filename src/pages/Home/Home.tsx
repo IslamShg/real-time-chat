@@ -2,6 +2,7 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import Users from '../users'
+import { Movies } from '../movies'
 import { CommonChat, MainHeader, MainSidebar } from '../../features'
 import { DirectMessages } from '../direct-messages'
 import styles from './home.module.scss'
@@ -17,6 +18,7 @@ export const Home = () => {
             <Route path='/common' element={<CommonChat />} />
             <Route path='/users' element={<Users />} />
             <Route path='/users/message/:uid' element={<DirectMessages />} />
+            <Route path='/movies' element={<Movies />} />
             <Route path='*' element={<Navigate to='/common' />} />
           </Routes>
         </div>

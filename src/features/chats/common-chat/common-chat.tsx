@@ -11,7 +11,7 @@ import {
 import { useSelector } from 'react-redux'
 
 import { ChatLayout } from '..'
-import { db } from '../../../configs/firebase-config'
+import { db } from '../../../shared/configs/firebase-config'
 import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
 import { RootState } from '../../../slices/root-state'
 import { MessageType } from '../common/types'
@@ -22,7 +22,10 @@ export const CommonChat = () => {
 
   const messagesQuery: Query<DocumentData> = useMemo(
     () =>
-      query(collection(db, 'common-chat-messages'), orderBy('sentTime', 'asc')),
+      query(
+        collection(db, 'common-chat-messages'),
+        orderBy('timestamp', 'asc')
+      ),
     []
   )
   const { snapshot, loading } = useFirestoreQuery(messagesQuery)
@@ -34,8 +37,9 @@ export const CommonChat = () => {
       authorEmail: userData.email,
       isEdited: false,
       text: messageInput,
-      sentTime: Timestamp.now(),
-      authorAvatarUrl: userData.photoURL
+      sentTime: Date.now(),
+      authorAvatarUrl: userData.photoURL,
+      timestamp: Timestamp.now()
     }
 
     setMessageInput('')

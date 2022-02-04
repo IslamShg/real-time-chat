@@ -8,7 +8,7 @@ import { doc, setDoc } from 'firebase/firestore'
 
 import { validation } from '../login-validation'
 import { LoginInput } from '../login-input'
-import { auth, db } from '../../../configs/firebase-config'
+import { auth, db } from '../../../shared/configs/firebase-config'
 import { useUserActionCreators } from '../../../slices/user-slice'
 import { userDataType } from '../../../slices/types'
 import styles from './login-form.module.scss'

@@ -4,7 +4,7 @@ import { signOut } from 'firebase/auth'
 import { useSelector } from 'react-redux'
 
 import defaultUserImage from '../../../assets/default-user-icon.jpg'
-import { auth } from '../../../configs/firebase-config'
+import { auth } from '../../../shared/configs/firebase-config'
 import styles from './main-header.module.scss'
 import { RootState } from '../../../slices/root-state'
 

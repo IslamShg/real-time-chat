@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { doc, DocumentData, DocumentSnapshot, getDoc } from 'firebase/firestore'
-import { db } from '../configs/firebase-config'
+import { db } from '../shared/configs/firebase-config'
 
 export const useGetDoc = (collectionName: string, docId: string) => {
   const [document, setDocument] =

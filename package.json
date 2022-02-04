@@ -31,6 +31,7 @@
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.6",
     "@reduxjs/toolkit": "^1.7.1",
+    "axios": "^0.25.0",
     "clsx": "^1.1.1",
     "dotenv-webpack": "^7.0.3",
     "firebase": "^9.6.1",
@@ -39,6 +40,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-firebase-hooks": "^4.0.1",
+    "react-query": "^3.34.12",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "yup": "^0.32.11"
