@@ -36,7 +36,7 @@ export const useSendDirectMessage = ({
   )
 
   return async () => {
-    if (!messageText.length) return
+    if (!messageText?.length) return
 
     const id = nanoid()
     const message: MessageType = {
@@ -66,9 +66,11 @@ export const useSendDirectMessage = ({
     }
 
     const partnerChatDocSnap = await getDoc(partnerChatDocRef)
+
     if (partnerChatDocSnap?.exists()) {
+      const prevUnreads = partnerChatDocSnap?.data().unreads || {}
       await updateDoc(partnerChatDocRef, {
-        unreads: [...partnerChatDocSnap?.data().unreads, { messageId: id }]
+        unreads: [...prevUnreads, { messageId: id }]
       })
     }
   }

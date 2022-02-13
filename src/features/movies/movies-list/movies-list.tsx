@@ -11,8 +11,8 @@ type Props = {
 export const MoviesList: React.FC<Props> = ({ data }) => {
   return (
     <div className={styles.container}>
-      {data?.map((movie) => (
-        <MovieCard key={movie.id} />
+      {data?.slice(0, 10).map((movie) => (
+        <MovieCard key={movie.id} movie={movie} />
       ))}
     </div>
   )

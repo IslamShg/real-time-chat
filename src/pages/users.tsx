@@ -3,7 +3,7 @@ import { collection, orderBy, query } from 'firebase/firestore'
 
 import { db } from '../shared/configs/firebase-config'
 import { UsersList } from '../features'
-import { useFirestoreQuery } from '../hooks/useFirestoreQuery'
+import { useFirestoreQuery } from '../shared/hooks/useFirestoreQuery'
 
 const Users = () => {
   const getUsersQuery = useMemo(

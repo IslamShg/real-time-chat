@@ -4,7 +4,7 @@ import { MoviesList, useQueryTop250Movies } from '../features'
 
 export const Movies = () => {
   const { data, isLoading, isError } = useQueryTop250Movies({ retry: false })
-  console.log(data)
+  console.log(data?.items[0])
 
   if (isLoading) return <div>Loading</div>
 
