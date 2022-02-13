@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import clsx from 'clsx'
 
 import { RootState } from '../../../slices/root-state'
 import { db } from '../../../shared/configs/firebase-config'
@@ -19,7 +18,6 @@ export const MainSidebar = () => {
     [uid]
   )
   const { snapshot } = useFirestoreQuery(getChatsQuery)
-  const chatsDivLength = snapshot ? (snapshot?.docs.length + 1) * 32 : 0
 
   return (
     <div className={styles.sidebar}>
@@ -40,30 +38,27 @@ export const MainSidebar = () => {
             />
           )}
         </div>
-        <div
-          style={{ height: isChatsDropdownOpened ? `${chatsDivLength}px` : 0 }}
-          className={clsx(styles.linksList, {
-            [styles.opened]: isChatsDropdownOpened
-          })}
-        >
-          <Link to='/common'># Common chat</Link>
-          {snapshot?.docs.map((doc) => (
-            <Link
-              key={doc.id}
-              to={`/users/message/${doc.id}`}
-              className={styles.chatLink}
-            >
-              <span className={styles.chatName}>
-                # {doc.data().receiverName || doc.data().receiverEmail}
-                {doc?.data()?.unreads?.length > 0 && (
-                  <span className={styles.chatBadge}>
-                    {doc.data().unreads.length}
-                  </span>
-                )}
-              </span>
-            </Link>
-          ))}
-        </div>
+        {isChatsDropdownOpened && (
+          <div className={styles.linksList}>
+            <Link to='/common'># Common chat</Link>
+            {snapshot?.docs.map((doc) => (
+              <Link
+                key={doc.id}
+                to={`/users/message/${doc.id}`}
+                className={styles.chatLink}
+              >
+                <span className={styles.chatName}>
+                  # {doc.data().receiverName || doc.data().receiverEmail}
+                  {doc?.data()?.unreads?.length > 0 && (
+                    <span className={styles.chatBadge}>
+                      {doc.data().unreads.length}
+                    </span>
+                  )}
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
       <div className={styles.linksGroup}>
         <Link to='/users'># users</Link>
