@@ -5,6 +5,7 @@ import { ChatMessage, FixedInput } from '..'
 import { MessageType } from '../common/types'
 import styles from './chat-layout.module.scss'
 import { userDataType } from '../../../slices/types'
+import { TriangleLoader } from '../../../shared/ui'
 
 type Props = {
   receiverData?: userDataType
@@ -32,7 +33,12 @@ export const ChatLayout: React.FC<Props> = ({
     messagesContainerRef.current?.scrollTo(0, scrollHeight)
   }, [chatMessages, commonMessagesSnapshot])
 
-  if (loading) return <p>...loading</p>
+  if (loading)
+    return (
+      <div className={styles.loaderWrapper}>
+        <TriangleLoader />
+      </div>
+    )
 
   return (
     <div className={styles.container}>

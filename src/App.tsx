@@ -7,6 +7,7 @@ import Router from './routes/Router'
 import { auth, db } from './shared/configs/firebase-config'
 import { useUserActionCreators } from './slices/user-slice'
 import './styles/index.scss'
+import { TriangleLoader } from './shared/ui'
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(true)
@@ -44,7 +45,7 @@ const App = () => {
     })
   }, [setUserData])
 
-  if (loading) return <p>Loading...</p>
+  if (loading) return <TriangleLoader fullScreen />
 
   return isUserAuth ? <Router /> : <LoginRouter />
 }
