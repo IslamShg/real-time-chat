@@ -1,50 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import React from 'react'
 
 import LoginRouter from './routes/login-router'
 import Router from './routes/Router'
-import { auth, db } from './shared/configs/firebase-config'
-import { useUserActionCreators } from './slices/user-slice'
+import { useAuth, TriangleLoader } from './shared'
 import './styles/index.scss'
 
 const App = () => {
-  const [loading, setLoading] = useState<boolean>(true)
-  const [isUserAuth, setIsUserAuth] = useState<boolean | null>(null)
-  const { setUserData } = useUserActionCreators()
+  const { loading, isUserAuth } = useAuth()
 
-  useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const { uid } = user
-        const userDocRef = doc(db, 'users', uid)
-        const docSnap = await getDoc(userDocRef)
-
-        if (docSnap.exists()) {
-          const { displayName, email, phoneNumber, photoURL, userMetadata } =
-            docSnap.data()
-          await updateDoc(userDocRef, {
-            userMetadata: { ...userMetadata, lastAuthTime: Date.now() }
-          })
-          setUserData({
-            uid,
-            displayName,
-            email,
-            phoneNumber,
-            photoURL
-          })
-        }
-
-        setIsUserAuth(true)
-        setLoading(false)
-        return
-      }
-      setLoading(false)
-      setIsUserAuth(false)
-    })
-  }, [setUserData])
-
-  if (loading) return <p>Loading...</p>
+  if (loading) return <TriangleLoader fullScreen />
 
   return isUserAuth ? <Router /> : <LoginRouter />
 }

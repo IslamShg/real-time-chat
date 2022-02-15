@@ -5,6 +5,7 @@ import { userDataType } from '../types'
 
 type userStateType = {
   userData: userDataType
+  isSettingsModalVisible: boolean
 }
 
 const initialState: userStateType = {
@@ -14,7 +15,8 @@ const initialState: userStateType = {
     email: null,
     phoneNumber: null,
     photoURL: null
-  }
+  },
+  isSettingsModalVisible: false
 }
 
 export const userSlice = createSlice({
@@ -23,6 +25,9 @@ export const userSlice = createSlice({
   reducers: {
     setUserData(state: userStateType, { payload }): void {
       state.userData = { ...state.userData, ...payload }
+    },
+    setSettingsModal(state: userStateType, { payload }): void {
+      state.isSettingsModalVisible = payload
     }
   }
 })

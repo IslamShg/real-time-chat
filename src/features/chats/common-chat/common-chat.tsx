@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux'
 
 import { ChatLayout } from '..'
 import { db } from '../../../shared/configs/firebase-config'
-import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
+import { useFirestoreQuery } from '../../../shared/hooks/useFirestoreQuery'
 import { RootState } from '../../../slices/root-state'
 import { MessageType } from '../common/types'
 
@@ -31,7 +31,7 @@ export const CommonChat = () => {
   const { snapshot, loading } = useFirestoreQuery(messagesQuery)
 
   const sendMessage = async (): Promise<void> => {
-    if (!messageInput.length) return
+    if (!messageInput?.length) return
     const message: MessageType = {
       authorName: userData.displayName,
       authorEmail: userData.email,

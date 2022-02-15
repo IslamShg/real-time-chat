@@ -1,5 +1,16 @@
-import React from 'react'
+import React, { FC } from 'react'
+import { Movie } from '../common'
 
-export const MovieCard = () => {
-  return <div>card</div>
+import styles from './movie-card.module.scss'
+
+type Props = {
+  movie: Movie
+}
+
+export const MovieCard: FC<Props> = ({ movie }) => {
+  return (
+    <div className={styles.card}>
+      <img className={styles.bgImage} src={movie.image} alt='' />
+    </div>
+  )
 }

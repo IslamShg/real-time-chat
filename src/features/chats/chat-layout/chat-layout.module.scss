@@ -33,3 +33,10 @@
     padding-left: 8px;
   }
 }
+
+.loaderWrapper {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}

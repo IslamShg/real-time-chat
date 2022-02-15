@@ -12,6 +12,7 @@ import { auth, db } from '../../../shared/configs/firebase-config'
 import { useUserActionCreators } from '../../../slices/user-slice'
 import { userDataType } from '../../../slices/types'
 import styles from './login-form.module.scss'
+import { TriangleLoader } from '../../../shared/ui'
 
 type FormValuesType = {
   email: string
@@ -19,14 +20,17 @@ type FormValuesType = {
 }
 
 export const LoginForm = () => {
+  const [loading, setLoading] = useState(false)
   const [authType, setAuthType] = useState<'signIn' | 'signUp'>('signIn')
   const [signInError, setSignInError] = useState<string | null>(null)
   const { setUserData } = useUserActionCreators()
 
   const signIn = async ({ email, password }: FormValuesType): Promise<void> => {
     try {
+      setLoading(true)
       await signInWithEmailAndPassword(auth, email, password)
     } catch (e) {
+      setLoading(false)
       if (e.code === 'auth/user-not-found') {
         setSignInError('An account with such an email was not found')
       } else
@@ -37,36 +41,43 @@ export const LoginForm = () => {
   }
 
   const signUp = async ({ email, password }: FormValuesType): Promise<void> => {
-    const userCreds = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    )
-    const {
-      uid,
-      displayName,
-      email: userEmail,
-      phoneNumber,
-      photoURL,
-      metadata
-    } = userCreds.user
+    setLoading(true)
+    try {
+      const userCreds = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+      const {
+        uid,
+        displayName,
+        email: userEmail,
+        phoneNumber,
+        photoURL,
+        metadata
+      } = userCreds.user
 
-    const user: userDataType = {
-      uid,
-      displayName,
-      email: userEmail,
-      phoneNumber,
-      photoURL,
-      chats: [],
-      userMetadata: {
-        creationTime: Date.now(),
-        lastSignInTime: metadata.lastSignInTime,
-        lastAuthTime: Date.now()
+      const user: userDataType = {
+        uid,
+        displayName,
+        email: userEmail,
+        phoneNumber,
+        photoURL,
+        chats: [],
+        userMetadata: {
+          creationTime: Date.now(),
+          lastSignInTime: metadata.lastSignInTime,
+          lastAuthTime: Date.now()
+        }
       }
+      setUserData(user)
+      await setDoc(doc(db, 'users', uid), user)
+    } catch (e) {
+      setLoading(false)
     }
-    setUserData(user)
-    await setDoc(doc(db, 'users', uid), user)
   }
+
+  if (loading) return <TriangleLoader fullScreen />
 
   return (
     <Formik

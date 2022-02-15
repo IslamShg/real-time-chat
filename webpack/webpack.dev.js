@@ -11,7 +11,7 @@ module.exports = {
     historyApiFallback: true
   },
   plugins: [
-    new Dotenv({ path: path.resolve(__dirname, '..', '.env.dev') }),
+    new Dotenv({ path: path.resolve(__dirname, '..', '.env') }),
     new ReactRefreshWebpackPlugin()
   ]
 }

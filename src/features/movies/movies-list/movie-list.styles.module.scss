@@ -2,6 +2,8 @@
   flex: 1;
   max-height: calc(100vh - 60px);
   overflow-y: auto;
-  display: grid;
-  grid-template-columns: repeat(3, auto);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 15px 0 0 15px;
 }

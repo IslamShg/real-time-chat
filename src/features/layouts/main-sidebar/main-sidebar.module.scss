@@ -13,14 +13,30 @@
     &:last-child {
       border: none;
     }
+
     a {
       color: #fff;
       font-size: 15px;
     }
-    .groupTitle {
-      margin-bottom: 6px;
-      font-size: 20px;
-      color: #fff;
+
+    .linksGroupHeader {
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      .chevronIcon {
+        color: #fff;
+      }
+      .groupTitle {
+        margin-bottom: 6px;
+        font-size: 20px;
+        color: #fff;
+      }
+    }
+
+    .linksList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .chatLink {

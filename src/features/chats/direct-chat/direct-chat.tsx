@@ -13,7 +13,7 @@ import {
 import { useSelector } from 'react-redux'
 
 import { ChatLayout } from '..'
-import { useFirestoreQuery } from '../../../hooks/useFirestoreQuery'
+import { useFirestoreQuery } from '../../../shared/hooks/useFirestoreQuery'
 import { db } from '../../../shared/configs/firebase-config'
 import { RootState } from '../../../slices/root-state'
 import { useChatsActions } from '../common/chats-slice'
